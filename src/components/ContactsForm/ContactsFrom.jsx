@@ -1,42 +1,38 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 
 import { Label, Form, Title, Input, Add } from './ContactsForm.styled';
 
-export class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+export const ContactForm =({onSubmit,}) => {
 
-  nameInputId = nanoid();
-  numberInputId = nanoid();
+  const [name, setName] = useState('')
+  const [number, setNumber] = useState('')
+ 
 
-  handleSubmit = e => {
+  const nameInputId = nanoid();
+  const numberInputId = nanoid();
+
+  const handleSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit(this.state);
-    this.setState({
-      name: '',
-      number: '',
-    });
+    onSubmit(name, number);
+   setName('')
+   setNumber('')
   };
 
-  handleChange = e => {
-    const { name, value } = e.target;
-    this.setState({
-      [name]: value,
-    });
+  const handleChange = e => {
+    console.log(e.target.value)  
+    
+   if(e.target.name === 'name') {setName(e.target.value)}
+   if(e.target.name === 'number') {setNumber(e.target.value)}
+  
+   
+   
+   
   };
 
-  render() {
-    const {
-      handleSubmit,
-      handleChange,
-      nameInputId,
-      numberInputId,
-      state: { name, number },
-    } = this;
+  
+    
     return (
       <Form onSubmit={handleSubmit}>
         <Label htmlFor={nameInputId}>
@@ -70,7 +66,7 @@ export class ContactForm extends Component {
       </Form>
     );
   }
-}
+
 
 ContactForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
